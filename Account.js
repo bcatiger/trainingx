@@ -1,8 +1,13 @@
 class Account {
-	constructor() {
+	constructor(name) {
+		this.name = name;
+		this.transactions = [];
 		this.balance = 0;
-		this.amount = 0;
 		this.date = new Date();
+	}
+
+	transact(to, amount) {
+		this.transactions.push(new Transaction(this, to, amount));
 	}
 
 	deposit(amount) {
@@ -14,8 +19,19 @@ class Account {
 	}
 
 	printStatement() {
-		return `Date: ${this.date}, Amount: ${this.amount}, Balance:${this.balance}`;
+		return `Date: ${this.date}, Balance:${this.balance}`;
 	}
 }
 
-module.exports = Account;
+class Transaction {
+	constructor(from, to, amount) {
+		this.from = from;
+		this.to = to;
+		this.amount = amount;
+
+		this.from.balance -= amount;
+		this.to.balance += amount;
+	}
+}
+
+module.exports = { Account, Transaction };

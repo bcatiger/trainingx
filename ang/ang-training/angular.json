@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "defaultProject": "ang-training",
+  "schematics": {
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
+  },
+  "projects": {
+    "ang-training": {
+      "projectType": "application",
+      "root": "apps/ang-training",
+      "sourceRoot": "apps/ang-training/src",
+      "prefix": "ang-training",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/ang-training",
+            "index": "apps/ang-training/src/index.html",
+            "main": "apps/ang-training/src/main.ts",
+            "polyfills": "apps/ang-training/src/polyfills.ts",
+            "tsConfig": "apps/ang-training/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/ang-training/src/favicon.ico",
+              "apps/ang-training/src/assets"
+            ],
+            "styles": ["apps/ang-training/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/ang-training/src/environments/environment.ts",
+                  "with": "apps/ang-training/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "ang-training:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "ang-training:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "ang-training:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/ang-training/src/**/*.ts",
+              "apps/ang-training/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/ang-training"],
+          "options": {
+            "jestConfig": "apps/ang-training/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "ang-training-e2e": {
+      "root": "apps/ang-training-e2e",
+      "sourceRoot": "apps/ang-training-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/ang-training-e2e/cypress.json",
+            "tsConfig": "apps/ang-training-e2e/tsconfig.e2e.json",
+            "devServerTarget": "ang-training:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "ang-training:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/ang-training-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    }
+  }
+}

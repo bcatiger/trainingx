@@ -1,17 +1,24 @@
-const Account = require("./Account");
+const { Account, Transaction } = require("./Account");
 
-const MyAccount = new Account();
-
+const BogdansAccount = new Account("Bogdan");
+const HannahsAccount = new Account("Hannah");
 test("check methods of Account object", () => {
-	expect(MyAccount.balance).toBe(0);
-	expect(MyAccount.deposit(50)).toBeFalsy();
-	expect(MyAccount.balance).toBe(50);
-	expect(MyAccount.withdraw(20)).toBeFalsy();
-	expect(MyAccount.balance).toBe(30);
+	expect(BogdansAccount.balance).toBe(0);
+	expect(BogdansAccount.deposit(50)).toBeFalsy();
+	expect(BogdansAccount.balance).toBe(50);
+	expect(BogdansAccount.withdraw(20)).toBeFalsy();
+	expect(BogdansAccount.balance).toBe(30);
 });
 
 test("check PrintStatement", () => {
-	const statement = MyAccount.printStatement();
+	const statement = BogdansAccount.printStatement();
 	const date = new Date();
-	expect(statement).toBe(`Date: ${date}, Amount: 0, Balance:30`);
+	expect(statement).toBe(`Date: ${date}, Balance:30`);
+});
+
+test("making a transaction", () => {
+	BogdansAccount.deposit(70);
+	BogdansAccount.transact(HannahsAccount, 100);
+	expect(HannahsAccount.balance).toBe(100);
+	expect(BogdansAccount.balance).toBe(0);
 });
